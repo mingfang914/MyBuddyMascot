@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Buddy Mascot Settings</title>
+  <link rel="stylesheet" href="Styles/popup.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="title">Cài Đặt Mascot ⚙️</div>
+    <div class="subtitle">Đừng hòng cấu hình lung tung!</div>
+  </div>
+
+  <div class="settings-container">
+    
+    <!-- Global Toggle -->
+    <div class="setting-row">
+      <div class="setting-info">
+        <span class="setting-title">Cho phép Mascot xuất hiện</span>
+        <span class="setting-desc">Bật hoặc tắt cậu ấy trên toàn bộ trình duyệt.</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="global-toggle" checked>
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Site Specific Toggle -->
+    <div class="setting-row">
+      <div class="setting-info">
+        <span class="setting-title">Chặn trên trang web này</span>
+        <span class="setting-desc" id="current-domain">Đang tải...</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="site-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+  </div>
+
+  <script src="Scripts/popup.js"></script>
+</body>
+</html>

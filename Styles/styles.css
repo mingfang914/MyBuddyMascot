@@ -1,0 +1,230 @@
+.shimeji-container {
+  position: fixed;
+  width: 128px;
+  height: 128px;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  user-select: none;
+  pointer-events: auto; /* Required for dragging the canvas */
+  transform: translate(0, 0); 
+  transition: opacity 1s ease-in-out;
+}
+
+.shimeji-canvas-wrapper {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  transition: transform 0.1s ease-out; /* Smooth flipping */
+}
+
+.shimeji-container canvas {
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.shimeji-container canvas:active {
+  cursor: grabbing;
+}
+
+.shimeji-chat-bubble {
+  position: absolute;
+  bottom: 140px; 
+  background-color: #ffe6e6; 
+  color: #8b0000;
+  border: 2px solid #8b0000;
+  border-radius: 12px;
+  padding: 8px 12px;
+  width: max-content;
+  max-width: 160px;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  word-wrap: break-word;
+  /* Support for dynamic stacking */
+  transform: translateX(-50%) translateY(var(--bubble-stack-offset, 0px));
+}
+
+/* Chat bubble tails common */
+.shimeji-chat-bubble::after, .shimeji-chat-bubble::before {
+  content: '';
+  position: absolute;
+  border-style: solid;
+}
+.shimeji-chat-bubble::after {
+  bottom: -10px;
+  border-width: 10px 10px 0;
+  border-color: #8b0000 transparent transparent transparent;
+}
+.shimeji-chat-bubble::before {
+  bottom: -6px;
+  border-width: 8px 8px 0;
+  border-color: #ffe6e6 transparent transparent transparent;
+  z-index: 1;
+}
+
+/* Base Center */
+.bubble-center { left: 50%; transform: translateX(-50%); }
+.bubble-center::after, .bubble-center::before { left: 50%; transform: translateX(-50%); }
+
+/* Bubble on Left */
+.bubble-left { left: 10px; transform: translateX(-100%); }
+.bubble-left::after, .bubble-left::before { left: 100%; transform: translateX(-20px); }
+
+/* Bubble on Right */
+.bubble-right { left: 118px; transform: translateX(0); }
+.bubble-right::after, .bubble-right::before { left: 0; transform: translateX(10px); }
+
+/* Bubble on Bottom (When mascot is at the top) */
+.bubble-bottom {
+  bottom: auto !important;
+  top: 140px !important;
+}
+
+/* Tail pointing UP for bubble-bottom */
+.bubble-bottom::after, .bubble-bottom::before {
+  bottom: auto !important;
+  top: -10px !important;
+  border-width: 0 10px 10px !important;
+}
+
+.bubble-bottom::after {
+  border-color: transparent transparent #8b0000 transparent !important;
+}
+
+.bubble-bottom::before {
+  top: -6px !important;
+  border-width: 0 8px 8px !important;
+  border-color: transparent transparent #ffe6e6 transparent !important;
+}
+
+/* Control Panel (Glassmorphism) */
+.shimeji-control-panel {
+  position: fixed;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  z-index: 1000002;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  min-width: 250px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+.shimeji-control-panel.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.shimeji-panel-item {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.shimeji-panel-item:hover {
+  background: rgba(255, 100, 100, 0.1);
+  color: #ff6464;
+}
+
+.shimeji-panel-title {
+  grid-column: span 2;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 1px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding-left: 12px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 8px;
+}
+
+.shimeji-panel-title:first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Ghost Mode and Transitions */
+.shimeji-ghost {
+  opacity: 0.1 !important;
+  pointer-events: none !important;
+}
+
+/* Heart Particle */
+.shimeji-heart {
+  position: fixed;
+  color: #ff6464;
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 1000005;
+  animation: heart-float 1.5s ease-out forwards;
+}
+
+@keyframes heart-float {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  20% { opacity: 1; transform: translateY(-20px) scale(1.2); }
+  100% { transform: translateY(-100px) scale(1); opacity: 0; }
+}
+
+/* Weather Layer */
+#shimeji-weather-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999997; /* Slightly below mascot containers */
+}
+
+/* Animation classes */
+.shimeji-shake .shimeji-canvas-wrapper {
+  animation: jiggle 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes jiggle {
+  0% { transform: scaleX(var(--shimeji-dir, 1)) translateX(-2px) rotate(-2deg); }
+  100% { transform: scaleX(var(--shimeji-dir, 1)) translateX(2px) rotate(2deg); }
+}
+
+/* Dismiss Animations */
+.shimeji-fade-out {
+  opacity: 0 !important;
+  transform: scale(0.5) translateY(-50px) !important;
+  transition: opacity 1s, transform 1s !important;
+}
+
+.shimeji-vanish {
+  animation: vanish-sparkle 1s forwards;
+}
+
+@keyframes vanish-sparkle {
+  0% { transform: scale(1); opacity: 1; filter: brightness(1.5); }
+  100% { transform: scale(1.5); opacity: 0; filter: blur(5px) brightness(2); }
+}

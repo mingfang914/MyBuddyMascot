@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "My Buddy Mascot",
+  "version": "1.0.0",
+  "description": "An interactive procedurally generated web mascot with a Tsundere personality.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "My Buddy Mascot"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "Assets/data.js",
+        "Assets/sprites.js",
+        "Scripts/mascot.js"
+      ],
+      "css": [
+        "Styles/styles.css"
+      ]
+    }
+  ]
+}
